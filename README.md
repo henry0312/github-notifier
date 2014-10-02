@@ -21,6 +21,7 @@ github-notifier makes up for [GitHub for Mac](https://mac.github.com/) (cf. [Git
 $ git clone https://github.com/henry0312/github-notifier.git
 $ cd github-notifier
 $ git submodule init
+$ git submodule update
 $ rake build
 $ rake conf.rb
 Input username: <your github username>
@@ -32,7 +33,7 @@ If you use [Two-factor Authentication](https://github.com/blog/1614-two-factor-a
 
 1. Get an access token from [Authorized applications](https://github.com/settings/applications)  
    NOTE1: The token must have the privilege to access notifications.  
-   NOTE2: The privilege to access notifications is only necessary. 
+   NOTE2: The privilege to access notifications is only necessary.
 2. Create `conf.rb` as below
 
 ```ruby
