@@ -32,22 +32,35 @@ end
 
 desc "Create conf.rb"
 file "conf.rb" do
-  require 'io/console'
+  require 'highline'
   require 'octokit'
 
-  print "Input username: "
-  username = STDIN.gets.chomp
-  print "Input password: "
-  password = STDIN.noecho(&:gets).chomp
-  print "\n"
+  cli = HighLine.new
+  endpoint = cli.ask("Input API endpoint: ") { |q| q.default = "https://api.github.com" }
+  username = cli.ask("Input Username: ")
+  password = cli.ask("Input Password: ") { |q| q.echo = false }
+  interval = cli.ask("Input Time Interval (minutes): ", Integer) { |q| q.default = "5" }
+  #client_id = cli.ask("Input Client ID: ")
+  #client_secret = cli.ask("Input Client Secret: ")
 
+  Octokit.configure do |c|
+    c.api_endpoint = endpoint
+  end
   client = Octokit::Client.new(:login => username, :password => password)
-  res = client.create_authorization(:scopes => ["notifications"], :note => "github-notifier")
+  res = client.create_authorization({
+    #:idempotent => true,
+    #:client_id => client_id,
+    #:client_secret => client_secret,
+    :scopes => ["notifications"],
+    :note => "github-notifier",
+    :note_url => "https://github.com/henry0312/github-notifier",
+  })
 
   File.open("conf.rb", "wb") do |file|
     file.write <<-EOS.undent
+      API_ENDPOINT = "#{endpoint}"
       ACCESS_TOKEN = "#{res[:token]}"
-      TIME = 5  # minutes
+      INTERVAL = #{interval}  # minutes
     EOS
   end
 end
@@ -75,7 +88,7 @@ def plist; <<-EOS.undent
       <key>WorkingDirectory</key>
       <string>#{current_path}</string>
       <key>StartInterval</key>
-      <integer>#{TIME*60}</integer>
+      <integer>#{INTERVAL*60}</integer>
       <key>StandardOutPath</key>
       <string>#{current_path}/log/stdout.log</string>
       <key>StandardErrorPath</key>
