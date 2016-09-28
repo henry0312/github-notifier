@@ -15,9 +15,12 @@ def notify(message:, title: "", subtitle: "", group: nil, open: "")
   system cmd.join(" ")
 end
 
-time = Time.at(Time.new - TIME*60)
+time = Time.at(Time.new - INTERVAL*60)
 
 begin
+  Octokit.configure do |c|
+    c.api_endpoint = API_ENDPOINT
+  end
   client = Octokit::Client.new(:access_token => ACCESS_TOKEN)
   client.notifications({all: true, since: time.utc.iso8601}).each do |res|
     html_url = res[:subject].rels[:latest_comment].get.data[:html_url]

@@ -14,6 +14,7 @@ github-notifier makes up for [GitHub for Mac](https://mac.github.com/) (cf. [Git
 * Xcode >= 5.0
 * ruby >= 2.1
 * [octokit.rb](https://github.com/octokit/octokit.rb) (`gem install octokit`)
+* [highline](https://github.com/JEG2/highline) (`gem install highline`)
 
 ## Installation
 
@@ -24,8 +25,10 @@ $ git submodule init
 $ git submodule update
 $ rake build
 $ rake conf.rb
-Input username: <your github username>
-Input password: <your github password> (NOTE: no echo back)
+Input Input API endpoint: |https://api.github.com|
+Input Username:
+Input Password:
+Input Time Interval (minutes): |5|
 $ rake load
 ```
 
@@ -37,8 +40,9 @@ If you use [Two-factor Authentication](https://github.com/blog/1614-two-factor-a
 2. Create `conf.rb` as below
 
 ```ruby
+API_ENDPOINT = ""
 ACCESS_TOKEN = "<your 40 char token>"
-TIME = 5  # minutes
+INTERVAL = 5  # minutes
 ```
 
 ## Uninstallation
