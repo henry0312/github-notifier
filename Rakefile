@@ -27,21 +27,62 @@ desc "Update repository"
 task :update do
   system [
     "git pull",
-    "git submodule update" ].join(" && ")
+    "git submodule update --init --recursive" ].join(" && ")
 end
 
-desc "Create conf.rb"
-file "conf.rb" do
+desc "Create github.yml"
+file "github.yml" do
+  require 'yaml'
+
+  endpoint, username, password = input
+  res = create_authorization(
+    endpoint: endpoint,
+    username: username,
+    password: password
+  )
+
+  YAML.dump(
+    [{"API_ENDPOINT" => endpoint,
+      "ACCESS_TOKEN" => res[:token],
+      "USER" => username}],
+    File.open("github.yml", "wb")
+  )
+end
+
+desc "Add an endpoint"
+task :add do
+  require 'yaml'
+
+  endpoint, username, password = input
+  res = create_authorization(
+    endpoint: endpoint,
+    username: username,
+    password: password
+  )
+
+  endpoints = YAML.load_file('github.yml')
+  endpoints << {"API_ENDPOINT" => endpoint,
+                "ACCESS_TOKEN" => res[:token],
+                "USER" => username}
+
+  YAML.dump(endpoints, File.open("github.yml", "wb"))
+end
+
+def input
   require 'highline'
-  require 'octokit'
 
   cli = HighLine.new
   endpoint = cli.ask("Input API endpoint: ") { |q| q.default = "https://api.github.com" }
   username = cli.ask("Input Username: ")
   password = cli.ask("Input Password: ") { |q| q.echo = false }
-  interval = cli.ask("Input Time Interval (minutes): ", Integer) { |q| q.default = "5" }
   #client_id = cli.ask("Input Client ID: ")
   #client_secret = cli.ask("Input Client Secret: ")
+
+  return endpoint, username, password
+end
+
+def create_authorization(endpoint:, username:, password:)
+  require 'octokit'
 
   Octokit.configure do |c|
     c.api_endpoint = endpoint
@@ -56,13 +97,7 @@ file "conf.rb" do
     :note_url => "https://github.com/henry0312/github-notifier",
   })
 
-  File.open("conf.rb", "wb") do |file|
-    file.write <<-EOS.undent
-      API_ENDPOINT = "#{endpoint}"
-      ACCESS_TOKEN = "#{res[:token]}"
-      INTERVAL = #{interval}  # minutes
-    EOS
-  end
+  return res
 end
 
 def current_path

@@ -21,14 +21,12 @@ github-notifier makes up for [GitHub for Mac](https://mac.github.com/) (cf. [Git
 ```sh
 $ git clone https://github.com/henry0312/github-notifier.git
 $ cd github-notifier
-$ git submodule init
-$ git submodule update
+$ git submodule update --init --recursive
 $ rake build
-$ rake conf.rb
+$ rake github.yml
 Input Input API endpoint: |https://api.github.com|
 Input Username:
 Input Password:
-Input Time Interval (minutes): |5|
 $ rake load
 ```
 
@@ -37,12 +35,12 @@ If you use [Two-factor Authentication](https://github.com/blog/1614-two-factor-a
 1. Get an access token from [Authorized applications](https://github.com/settings/applications)  
    NOTE1: The token must have the privilege to access notifications.  
    NOTE2: The privilege to access notifications is only necessary.
-2. Create `conf.rb` as below
+2. Create `github.yml` as below
 
-```ruby
-API_ENDPOINT = ""
-ACCESS_TOKEN = "<your 40 char token>"
-INTERVAL = 5  # minutes
+```yaml
+- API_ENDPOINT: <somewhere>
+  ACCESS_TOKEN: <your 40 char token>
+  USER: <username>
 ```
 
 ## Uninstallation
@@ -55,7 +53,7 @@ $ rake unload
 
 ### Change time interval
 
-If you want to change time interval to get notifications, you need to change `TIME` in `conf.rb` and run:
+If you want to change time interval to get notifications, you need to change `INTERVAL` in `conf.rb` and run:
 
 ```sh
 $ rake unload
@@ -67,6 +65,17 @@ $ rake load
 ```sh
 $ rake update
 $ rake build
+```
+
+### Add endpoint
+
+```sh
+$ rake unload
+$ rake add
+Input Input API endpoint: |https://api.github.com|
+Input Username:
+Input Password:
+$ rake load
 ```
 
 ## Contributing
