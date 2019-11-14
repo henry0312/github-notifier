@@ -1,3 +1,12 @@
+desc "Build terminal-notifier"
+task :build do
+  system [
+    "xcodebuild",
+    "-project 'terminal-notifier/Terminal Notifier.xcodeproj'",
+    "-configuration 'Release'",
+    "PRODUCT_NAME='github-notifier'" ].join(" ")
+end
+
 desc "Load plist"
 task :load do
   require_relative 'conf'
@@ -16,7 +25,9 @@ end
 
 desc "Update repository"
 task :update do
-  system "git pull"
+  system [
+    "git pull",
+    "git submodule update --init --recursive" ].join(" && ")
 end
 
 desc "Create github.yml"

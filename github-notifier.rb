@@ -5,7 +5,7 @@ require_relative 'conf'
 
 def notify(message:, title: "", subtitle: "", group: nil, open: "")
   cmd = [
-    "terminal-notifier",
+    "./github-notifier.app/Contents/MacOS/github-notifier",
     "-appIcon GitHub-Mark-32px.png",
     "-message #{message.sub(/^([\[<])/){"\\" + $1}.shellescape}"
   ]
