@@ -1,1 +1,0 @@
-terminal-notifier/build/Release/github-notifier.app
