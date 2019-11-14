@@ -1,5 +1,6 @@
 desc "Build terminal-notifier"
 task :build do
+  # See also https://github.com/Homebrew/homebrew-core/blob/master/Formula/terminal-notifier.rb
   system [
     "xcodebuild",
     "-project 'terminal-notifier/Terminal Notifier.xcodeproj'",
