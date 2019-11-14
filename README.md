@@ -22,6 +22,7 @@ github-notifier makes up for [GitHub for Mac](https://mac.github.com/) (cf. [Git
 ```sh
 $ git clone https://github.com/henry0312/github-notifier.git
 $ cd github-notifier
+$ rake build
 $ rake github.yml
 Input Input API endpoint: |https://api.github.com|
 Input Username:
@@ -29,11 +30,11 @@ Input Password:
 $ rake load
 ```
 
-If you use [Two-factor Authentication](https://github.com/blog/1614-two-factor-authentication), you have to create `github.yml` manually.
+If you use [Two-factor Authentication](https://github.com/blog/1614-two-factor-authentication), you have to create `conf.rb` manually.
 
 1. Get an access token from [Authorized applications](https://github.com/settings/applications)  
    NOTE1: The token must have the privilege to access notifications.  
-   NOTE2: The privilege to repo and notifications is necessary.
+   NOTE2: The privilege to access notifications is only necessary.
 2. Create `github.yml` as below
 
 ```yaml
@@ -63,6 +64,7 @@ $ rake load
 
 ```sh
 $ rake update
+$ rake build
 ```
 
 ### Add endpoint
