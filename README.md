@@ -13,7 +13,6 @@ github-notifier makes up for [GitHub for Mac](https://mac.github.com/) (cf. [Git
 * OS X >= 10.8
 * Xcode >= 5.0
 * ruby >= 2.1
-* [julienXX/terminal-notifier](https://github.com/julienXX/terminal-notifier) (`brew install terminal-notifier`)
 * [octokit.rb](https://github.com/octokit/octokit.rb) (`gem install octokit`)
 * [highline](https://github.com/JEG2/highline) (`gem install highline`)
 
@@ -22,6 +21,7 @@ github-notifier makes up for [GitHub for Mac](https://mac.github.com/) (cf. [Git
 ```sh
 $ git clone https://github.com/henry0312/github-notifier.git
 $ cd github-notifier
+$ git submodule update --init --recursive
 $ rake build
 $ rake github.yml
 Input Input API endpoint: |https://api.github.com|
